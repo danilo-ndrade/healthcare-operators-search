@@ -1,22 +1,27 @@
-<script setup lang="ts" name="HealthcareIndex">
+<script setup lang="ts">
 import { formatCNPJ } from '@/composables/formatCNPJ'
 import { searchOperators } from '@/services/search'
 import type { Operator } from '@/types/operator'
 import { ref } from 'vue'
 
 const searchTerm = ref('')
+const searchOption = ref('company_name') // "Razão Social" selecionada por padrão
 
 const result = ref<Operator[]>([])
 const erro = ref<unknown | null>(null)
 
-async function getResults(searchTerm: string) {
-  await searchOperators(searchTerm)
-    .then((data) => {
-      result.value = data
-    })
-    .catch((error) => {
-      erro.value = error
-    })
+async function getResults() {
+  erro.value = null
+  try {
+    const filters = {
+      ans_number: searchOption.value === 'ans_number',
+      cnpj: searchOption.value === 'cnpj',
+      company_name: searchOption.value === 'company_name',
+    }
+    result.value = await searchOperators(searchTerm.value, filters)
+  } catch (error) {
+    erro.value = error
+  }
 }
 </script>
 
@@ -35,8 +40,8 @@ async function getResults(searchTerm: string) {
         >.
       </p>
     </div>
-    <div class="">
-      <form @submit.prevent="getResults(searchTerm)">
+    <div>
+      <form @submit.prevent="getResults">
         <div
           class="mx-auto w-full max-w-lg border border-slate-300 dark:border-slate-500 rounded flex gap-2 divide-x divide-slate-300 dark:divide-slate-500 p-2"
         >
@@ -48,6 +53,40 @@ async function getResults(searchTerm: string) {
             class="w-full max-w-xl text-lg focus:outline-none"
           />
           <button type="submit" class="cursor-pointer hover:text-slate-400">Buscar</button>
+        </div>
+        <div class="mx-auto w-full max-w-lg flex gap-3 mt-3">
+          <div class="space-x-1">
+            <input
+              type="radio"
+              name="searchOption"
+              id="ans_number"
+              value="ans_number"
+              v-model="searchOption"
+            />
+            <label for="ans_number">Número ANS</label>
+          </div>
+          <div class="space-x-1">
+            <input
+              type="radio"
+              name="searchOption"
+              id="cnpj"
+              value="cnpj"
+              v-model="searchOption"
+              class="bg-transparent"
+            />
+            <label for="cnpj">CNPJ</label>
+          </div>
+          <div class="space-x-1">
+            <input
+              type="radio"
+              name="searchOption"
+              id="company_name"
+              value="company_name"
+              v-model="searchOption"
+              class="bg-transparent"
+            />
+            <label for="company_name">Razão Social</label>
+          </div>
         </div>
       </form>
     </div>
