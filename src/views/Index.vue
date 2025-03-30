@@ -10,6 +10,12 @@ const searchOption = ref('company_name') // "Razão Social" selecionada por padr
 const result = ref<Operator[]>([])
 const erro = ref<unknown | null>(null)
 
+const modal = ref<string | null>(null)
+
+function toggleModal(cnpj: string | null) {
+  modal.value = cnpj
+}
+
 async function getResults() {
   erro.value = null
   try {
@@ -19,6 +25,7 @@ async function getResults() {
       company_name: searchOption.value === 'company_name',
     }
     result.value = await searchOperators(searchTerm.value, filters)
+    console.log(result)
   } catch (error) {
     erro.value = error
   }
@@ -106,7 +113,43 @@ async function getResults() {
               <p>CNPJ - {{ formatCNPJ(operator.CNPJ) }}</p>
             </div>
             <div class="flex justify-end">
-              <button class="underline">Detalhes</button>
+              <button class="underline" @click="toggleModal(operator.CNPJ)">Detalhes</button>
+            </div>
+          </div>
+          <div v-if="modal === operator.CNPJ">
+            <div
+              class="fixed inset-0 bg-black/40 backdrop-blur-xs flex items-center justify-center"
+            >
+              <div class="bg-white dark:bg-slate-800 p-4 rounded mx-3 md:mx-0">
+                <div class="flex justify-end">
+                  <button @click="toggleModal(null)" class="float-right text-xl">&times;</button>
+                </div>
+                <h3 class="font-medium">{{ operator.Razao_Social }}</h3>
+                <div>
+                  <p><strong>Nome Fantasia:</strong> {{ operator.Nome_Fantasia }}</p>
+                  <p><strong>CNPJ:</strong> {{ formatCNPJ(operator.CNPJ) }}</p>
+                  <p><strong>Registro ANS:</strong> {{ operator.Registro_ANS }}</p>
+                  <p><strong>Data Registro ANS:</strong> {{ operator.Data_Registro_ANS }}</p>
+                  <p><strong>Modalidade:</strong> {{ operator.Modalidade }}</p>
+                  <p>
+                    <strong>Região de Comercialização:</strong>
+                    {{ operator.Regiao_de_Comercializacao }}
+                  </p>
+                  <p><strong>Endereço Eletrônico:</strong> {{ operator.Endereco_eletronico }}</p>
+                  <p><strong>Telefone:</strong> {{ operator.Telefone }}</p>
+                  <p><strong>Fax:</strong> {{ operator.Fax }}</p>
+                  <p><strong>Logradouro:</strong> {{ operator.Logradouro }}</p>
+                  <p><strong>Número:</strong> {{ operator.Numero }}</p>
+                  <p><strong>Complemento:</strong> {{ operator.Complemento }}</p>
+                  <p><strong>Bairro:</strong> {{ operator.Bairro }}</p>
+                  <p><strong>Cidade:</strong> {{ operator.Cidade }}</p>
+                  <p><strong>UF:</strong> {{ operator.UF }}</p>
+                  <p><strong>CEP:</strong> {{ operator.CEP }}</p>
+                  <p><strong>DDD:</strong> {{ operator.DDD }}</p>
+                  <p><strong>Cargo do Representante:</strong> {{ operator.Cargo_Representante }}</p>
+                  <p><strong>Representante:</strong> {{ operator.Representante }}</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
