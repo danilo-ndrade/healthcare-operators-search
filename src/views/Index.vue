@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { formatCEP } from '@/composables/formatCEP'
 import { formatCNPJ } from '@/composables/formatCNPJ'
 import { searchOperators } from '@/services/search'
 import type { Operator } from '@/types/operator'
@@ -133,19 +134,20 @@ async function getResults() {
                   <p><strong>Modalidade:</strong> {{ operator.Modalidade }}</p>
                   <p>
                     <strong>Região de Comercialização:</strong>
-                    {{ operator.Regiao_de_Comercializacao }}
+                    {{ Number(operator.Regiao_de_Comercializacao) }}
                   </p>
                   <p><strong>Endereço Eletrônico:</strong> {{ operator.Endereco_eletronico }}</p>
-                  <p><strong>Telefone:</strong> {{ operator.Telefone }}</p>
-                  <p><strong>Fax:</strong> {{ operator.Fax }}</p>
+                  <p><strong>DDD:</strong> {{ Number(operator.DDD) }}</p>
+
+                  <p><strong>Telefone:</strong> {{ Number(operator.Telefone) }}</p>
+                  <p><strong>Fax:</strong> {{ Number(operator.Fax) }}</p>
                   <p><strong>Logradouro:</strong> {{ operator.Logradouro }}</p>
                   <p><strong>Número:</strong> {{ operator.Numero }}</p>
                   <p><strong>Complemento:</strong> {{ operator.Complemento }}</p>
                   <p><strong>Bairro:</strong> {{ operator.Bairro }}</p>
                   <p><strong>Cidade:</strong> {{ operator.Cidade }}</p>
                   <p><strong>UF:</strong> {{ operator.UF }}</p>
-                  <p><strong>CEP:</strong> {{ operator.CEP }}</p>
-                  <p><strong>DDD:</strong> {{ operator.DDD }}</p>
+                  <p><strong>CEP:</strong> {{ formatCEP(operator.CEP) }}</p>
                   <p><strong>Cargo do Representante:</strong> {{ operator.Cargo_Representante }}</p>
                   <p><strong>Representante:</strong> {{ operator.Representante }}</p>
                 </div>
