@@ -112,6 +112,7 @@ async function getResults() {
             <div>
               <p class="font-medium">{{ operator.Razao_Social }}</p>
               <p>CNPJ - {{ formatCNPJ(operator.CNPJ) }}</p>
+              <p>Registro ANS - {{ operator.Registro_ANS }}</p>
             </div>
             <div class="flex justify-end">
               <button class="underline" @click="toggleModal(operator.CNPJ)">Detalhes</button>
@@ -157,8 +158,8 @@ async function getResults() {
         </div>
       </div>
     </div>
-    <div v-if="erro">
-      <p>{{ erro }}</p>
+    <div v-if="erro" class="flex justify-center">
+      <p class="text-red-300 underline">{{ erro }}</p>
     </div>
   </div>
 </template>

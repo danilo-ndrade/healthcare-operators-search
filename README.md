@@ -1,6 +1,8 @@
-# healthcare-operators-search
+# healthcare-operators-search: Interface para busca de operadoras de planos de saúde.
 
-This template should help get you started developing with Vue 3 in Vite.
+Interface desenvolvida para consulta de operadoras de plano de saúde ativas. A busca é feita por api que retorna lista de operadoras de acordo com filtros selecionados pelo usuário. É possível buscar por Razão Social, CNPJ e número de Registro ANS. A api utiliza os dados públicos fornceidos pelas ANS.
+
+Repositório da API: https://github.com/danilo-ndrade/healthcare-operators-api
 
 ## Recommended IDE Setup
 

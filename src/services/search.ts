@@ -25,6 +25,6 @@ export async function searchOperators(
     return await res.json()
   } catch (error) {
     console.error('Erro na requisição:', error)
-    throw error
+    throw 'Erro ao fazer requisição: ' + error
   }
 }
